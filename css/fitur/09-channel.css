@@ -1,0 +1,716 @@
+/* =========================================================
+   Stivora — Galery · Lainnya · Channel Favorit
+   (dimuat berurutan sesuai nomor file; jangan ubah urutannya)
+   ========================================================= */
+/* ===== Channel Favorit (5.61.0) ===== */
+:root {
+  --ch: #e5484d;
+}
+[data-theme='dark'] {
+  --ch: #ff6b70;
+}
+[class^='ch-'] svg,
+[class*=' ch-'] svg,
+#chPutar svg {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+[class^='ch-'] svg .isi,
+[class*=' ch-'] svg .isi {
+  fill: currentColor;
+  stroke: none;
+}
+.ch-tambah-btn {
+  background: var(--ch);
+}
+[data-theme='dark'] .ch-tambah-btn {
+  color: #2a0d0e;
+}
+.ch-kosong > svg {
+  color: var(--ch);
+}
+/* lencana platform: huruf + warna platform (bukan logo) */
+.ch-pl {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: var(--p);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+  line-height: 1;
+}
+.ch-pl.besar {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+.ch-pl-ig {
+  background: linear-gradient(45deg, #f58529, #dd2a7b 50%, #8134af);
+}
+[data-theme='dark'] .ch-pl-gelap {
+  box-shadow: inset 0 0 0 1px #555;
+}
+.ch-chip-pl button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  font-size: 12px;
+}
+.ch-chip-pl .ch-pl {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  font-size: 9px;
+}
+.ch-chip-top button {
+  height: 30px;
+  font-size: 12px;
+}
+/* avatar */
+.ch-av {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--g);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+.ch-av img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ch-av.mini {
+  width: 24px;
+  height: 24px;
+  font-size: 10px;
+}
+.ch-av.besar {
+  width: 88px;
+  height: 88px;
+  font-size: 32px;
+  border: 4px solid var(--bg);
+}
+.ch-judul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.ch-judul button {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ch);
+  text-transform: none;
+  letter-spacing: 0;
+  cursor: pointer;
+}
+/* video baru */
+.ch-baru-list {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+.ch-vb {
+  flex: 0 0 220px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  cursor: pointer;
+}
+.ch-vb-tb,
+.ch-vid-tb {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+.ch-vb-tb img,
+.ch-vid-tb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ch-vb-tb em,
+.ch-vid-tb em {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.78);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  font-style: normal;
+}
+.ch-lb-baru {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--ch);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+}
+.ch-vb-bw {
+  display: flex;
+  gap: 8px;
+  margin-top: 7px;
+  align-items: flex-start;
+}
+.ch-vb-bw > span:last-child {
+  min-width: 0;
+}
+.ch-vb-bw b {
+  display: -webkit-box;
+  font-size: 13px;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.ch-vb-bw small {
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+/* kartu kreator */
+.ch-daftar {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+@media (min-width: 600px) {
+  .ch-daftar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.ch-kartu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  text-align: left;
+  font: inherit;
+  color: var(--text);
+  cursor: pointer;
+}
+.ch-kartu.arsip {
+  opacity: 0.7;
+}
+.ch-kartu-tx {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ch-kartu-tx > b {
+  font-size: 15px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  padding-right: 50px;
+}
+.ch-kartu-tx > small {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ch-pls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 7px;
+}
+.ch-pls em {
+  margin-left: 4px;
+  font-size: 11.5px;
+  font-style: normal;
+  color: var(--text-2);
+}
+.ch-lenc-baru {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--ch);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 800;
+}
+/* tambah */
+.ch-tambah .lg-muat,
+.ch-tambah .lg-salah {
+  margin-top: 14px;
+}
+.ch-tambah .lg-muat i,
+.ch-det .lg-muat i {
+  border-top-color: var(--ch);
+}
+.ch-pra {
+  margin-top: 14px;
+  border: 1px solid var(--ch);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.ch-banner {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--g), color-mix(in srgb, var(--g) 50%, #000));
+}
+.ch-banner.kecil {
+  height: 72px;
+  border-radius: 0;
+}
+.ch-banner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ch-pra-atas {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 0 14px;
+  margin-top: -26px;
+  position: relative;
+}
+.ch-pra-atas .ch-av {
+  border: 3px solid var(--surface);
+}
+.ch-pra-atas > span:last-child {
+  min-width: 0;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+.ch-pra-atas b {
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+.ch-pra-atas small {
+  font-size: 12px;
+  color: var(--text-2);
+}
+.ch-desk {
+  margin: 10px 14px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-2);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.ch-terdeteksi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 0;
+}
+.ch-terdeteksi > span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ch-terdeteksi b {
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+.ch-terdeteksi small {
+  font-size: 12px;
+  color: var(--text-2);
+}
+.ch-pra-isi {
+  padding: 6px 14px 14px;
+}
+.ch-kr-pil button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ch-kr-pil svg {
+  width: 15px;
+  height: 15px;
+}
+.ch-pra .bk-pil button.on,
+.ch-det .bk-pil button.on {
+  border-color: var(--ch);
+  background: color-mix(in srgb, var(--ch) 12%, var(--surface));
+  color: var(--ch);
+}
+.ch-tbh {
+  border-style: dashed !important;
+  color: var(--ch) !important;
+}
+.ch-catat {
+  margin-top: 12px;
+}
+/* detail */
+.ch-det-atas {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin-top: -44px;
+  padding: 0 4px;
+  position: relative;
+}
+.ch-av-ganti {
+  position: relative;
+  flex: none;
+  cursor: pointer;
+}
+.ch-av-kamera {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+.ch-av-kamera svg {
+  width: 15px;
+  height: 15px;
+}
+.ch-det-tx {
+  flex: 1;
+  min-width: 0;
+  padding-top: 50px;
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+}
+.ch-det-tx h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.ch-det-tx small {
+  margin-top: 3px;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.ch-arsipb {
+  flex: none;
+  height: 36px;
+  margin-bottom: 6px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.ch-arsipb.on {
+  background: var(--surface-2);
+  color: var(--text);
+}
+.ch-det .bk-h3 button {
+  color: var(--ch);
+}
+.ch-det .bk-h3 button svg {
+  width: 15px;
+  height: 15px;
+}
+.ch-plat-box {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.ch-plat {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.ch-plat:last-child {
+  border-bottom: 0;
+}
+.ch-plat-tx {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ch-plat-tx b {
+  font-size: 14px;
+}
+.ch-plat-tx small {
+  font-size: 12px;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+.ch-buka {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--ch) 12%, transparent);
+  color: var(--ch);
+  font-size: 12.5px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.ch-x {
+  flex: none;
+  border: 0;
+  background: none;
+  padding: 4px;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.ch-x svg {
+  width: 16px;
+  height: 16px;
+}
+.ch-vid {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.ch-vid:last-child {
+  border-bottom: 0;
+}
+.ch-vid-tb {
+  width: clamp(96px, 30vw, 124px);
+  flex: none;
+  border-radius: 9px;
+}
+.ch-vid-tx {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ch-vid-tx b {
+  display: -webkit-box;
+  font-size: 13.5px;
+  line-height: 1.3;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.ch-vid-tx small {
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+.ch-sim {
+  flex: none;
+  border: 0;
+  background: none;
+  padding: 6px;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.ch-sim svg {
+  width: 20px;
+  height: 20px;
+}
+.ch-sim.on {
+  color: var(--ch);
+}
+.ch-sim.on svg {
+  fill: currentColor !important;
+}
+.fm-bintang.ch-bintang {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.ch-alasan {
+  margin-top: 10px;
+  resize: vertical;
+}
+.ch-pola {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--ch);
+  cursor: pointer;
+}
+.ch-pola svg {
+  width: 15px;
+  height: 15px;
+}
+.ch-fav-form {
+  border-color: var(--ch);
+}
+.ch-fav {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.ch-fav:first-child {
+  padding-top: 0;
+}
+.ch-fav:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.ch-fav-tb {
+  position: relative;
+  flex: none;
+  width: 96px;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 9px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  padding: 0;
+  cursor: pointer;
+  color: #fff;
+}
+.ch-fav-tb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ch-fav-tb > svg {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+}
+.ch-fav-tx {
+  flex: 1;
+  min-width: 0;
+}
+.ch-fav-tx b {
+  display: block;
+  font-size: 13.5px;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.ch-fav-tx p {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.ch-tokoh i {
+  font-style: normal;
+}
+.ch-tokoh button + button {
+  color: var(--text-2);
+}
+.ch-ganti-nama {
+  margin-bottom: 8px;
+}
+.ch-putar-tb {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+.ch-putar-tb button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #111;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ch-putar-tb svg {
+  width: 16px;
+  height: 16px;
+}
+@media (min-width: 900px) {
+  #layer-page:has(.ch-det) .screen-body {
+    max-width: 1100px;
+  }
+  .ch-banner:not(.kecil) {
+    height: 170px;
+  }
+  .ch-det-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 24px;
+    align-items: start;
+  }
+}
+html.kunci-aktif .ch-putar {
+  visibility: hidden;
+}
