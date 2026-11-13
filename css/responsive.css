@@ -1,0 +1,393 @@
+/* =========================================================
+   Stivora — Responsif: tablet, laptop, PC, monitor lebar, TV, hover, gerak dikurangi
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .nav-ic {
+    transition: none;
+  }
+  .nav-item.pop .nav-ic {
+    animation: none;
+  }
+}
+
+/* Efek hover hanya untuk perangkat dengan mouse/trackpad */
+@media (hover: hover) and (pointer: fine) {
+  .g-item,
+  .pref-box,
+  .row,
+  .chip,
+  .theme-opt,
+  .nav-item {
+    cursor: pointer;
+  }
+
+  .g-item img,
+  .g-item video {
+    transition: transform 0.35s ease;
+  }
+  .g-item:hover img,
+  .g-item:hover video {
+    transform: scale(1.04);
+  }
+  .pref-box:hover {
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+  }
+  .row:hover {
+    background: var(--surface-2);
+  }
+  .chip:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .icon-btn:hover {
+    background: var(--surface-2);
+  }
+  .icon-btn.light:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+/* ---------- ≥ 600px: tablet (rail di kiri) ---------- */
+@media (min-width: 600px) {
+  .app {
+    max-width: none;
+    margin: 0;
+    padding-left: 88px;
+  }
+  .bottom-nav {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transform: none;
+    width: 88px;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: calc(18px + env(safe-area-inset-top)) 10px 18px;
+    border-top: 0;
+    border-right: 1px solid var(--line);
+    background: var(--surface);
+    overflow-y: auto;
+  }
+  .nav-brand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  .nav-brand-name {
+    display: none;
+  }
+  .nav-brand .brand-mark {
+    flex-shrink: 0;
+  }
+  .nav-brand .brand-mark {
+    width: 44px;
+    height: 44px;
+  }
+  .nav-item {
+    height: 66px;
+    border-radius: 18px;
+    flex-shrink: 0;
+  }
+  .nav-item.active {
+    background: var(--accent-soft);
+  }
+  .topbar {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: calc(24px + env(safe-area-inset-top)) 32px 14px;
+  }
+  .topbar .brand-mark,
+  .topbar .brand-name {
+    display: none;
+  }
+  .topbar .page-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.4px;
+    margin: 0;
+  }
+  .pages {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 6px 32px calc(120px + env(safe-area-inset-bottom));
+  }
+
+  .toast {
+    bottom: calc(32px + env(safe-area-inset-bottom));
+  }
+
+  .g-item,
+  .g-item:nth-child(3n + 1) {
+    aspect-ratio: 4 / 5;
+  }
+  .sheet {
+    top: 50%;
+    bottom: auto;
+    width: calc(100% - 48px);
+    max-width: 520px;
+    max-height: 88vh;
+    border-radius: 24px;
+    padding: 22px 24px 22px;
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.97);
+    transition:
+      transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+      opacity 0.2s;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  }
+
+  .screen {
+    left: auto;
+    right: 0;
+    margin: 0;
+    width: min(560px, calc(100vw - 88px));
+    max-width: none;
+    border-left: 1px solid var(--line);
+    box-shadow:
+      0 0 0 100vmax var(--scrim),
+      -12px 0 40px rgba(0, 0, 0, 0.2);
+  }
+  .screen-bar {
+    padding: calc(16px + env(safe-area-inset-top)) 16px 10px;
+  }
+  .screen-body {
+    padding: 4px 28px calc(30px + env(safe-area-inset-bottom));
+  }
+
+  .dialog {
+    max-width: 400px;
+  }
+}
+
+/* ---------- ≥ 900px: Pengaturan dua kolom ---------- */
+@media (min-width: 900px) {
+  #page-pengaturan.active {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+    align-items: start;
+  }
+  #page-pengaturan .group {
+    margin-top: 0;
+  }
+}
+
+/* ---------- ≥ 1200px: laptop & PC (drawer) ---------- */
+@media (min-width: 1200px) {
+  .app {
+    padding-left: 264px;
+  }
+  .bottom-nav {
+    width: 264px;
+    padding: 28px 16px;
+    gap: 4px;
+  }
+  .nav-brand {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    padding: 0 10px;
+    margin-bottom: 26px;
+  }
+  .nav-brand-name {
+    display: block;
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+  .nav-item {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 14px;
+    height: 54px;
+    padding: 0 16px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+  .nav-item.active {
+    font-weight: 800;
+  }
+  .screen {
+    width: min(600px, calc(100vw - 264px));
+  }
+  .topbar {
+    padding-top: 34px;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .pages {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .topbar .page-title {
+    font-size: 32px;
+  }
+
+  .intro h2 {
+    font-size: 26px;
+  }
+}
+
+/* ---------- ≥ 1600px: monitor lebar ---------- */
+@media (min-width: 1600px) {
+  .topbar,
+  .pages {
+    max-width: 1440px;
+  }
+}
+
+/* ---------- Layar pendek (HP mendatar): rail lebih rapat ---------- */
+@media (min-width: 600px) and (max-height: 480px) {
+  .nav-brand {
+    margin-bottom: 6px;
+  }
+  .nav-brand .brand-mark {
+    width: 36px;
+    height: 36px;
+  }
+  .nav-item {
+    height: 56px;
+  }
+  .topbar {
+    padding-top: 12px;
+  }
+  .topbar .page-title {
+    font-size: 22px;
+  }
+  .sheet {
+    max-height: 94vh;
+  }
+}
+
+/* Tata letak dirancang ~1280px lalu diperbesar (zoom via JS).
+   Semua elemen penting berada di dalam tepi aman 5% (overscan). */
+html.tv .app {
+  padding: 36px 64px 36px calc(64px + 120px);
+}
+html.tv .bottom-nav {
+  top: 36px;
+  bottom: 36px;
+  left: 64px;
+  width: 104px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  padding: 22px 12px;
+  gap: 8px;
+  box-shadow: var(--shadow);
+}
+html.tv .nav-brand {
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 18px;
+}
+html.tv .nav-brand-name {
+  display: none;
+}
+html.tv .nav-item {
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  height: 76px;
+  padding: 0;
+  font-size: 13px;
+}
+html.tv .topbar {
+  padding: 8px 8px 16px;
+  max-width: none;
+}
+html.tv .pages {
+  padding: 0 8px 120px;
+  max-width: none;
+}
+html.tv .toast {
+  bottom: 44px;
+}
+html.tv .screen {
+  top: 36px;
+  bottom: 36px;
+  right: 64px;
+  height: auto;
+  border-radius: 28px;
+  width: 600px;
+}
+
+/* Fokus remote harus sangat terlihat dari jauh */
+html.tv :focus-visible,
+html.tv :focus {
+  outline: 4px solid var(--accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 9px var(--accent-soft);
+}
+html.tv .pref-box:focus,
+html.tv .nav-item:focus {
+  transform: scale(1.04);
+  transition: transform 0.15s;
+}
+@media (max-width: 359px) {
+  .row .row-text small {
+    white-space: normal;
+  }
+}
+@media (min-width: 600px) {
+  #layer-page.screen {
+    left: 88px;
+    right: 0;
+    width: auto;
+    border-left: 0;
+    box-shadow: none;
+  }
+  #layer-page .screen-bar {
+    max-width: 784px;
+    width: 100%;
+    margin: 0 auto;
+    padding: calc(22px + env(safe-area-inset-top)) 20px 8px;
+  }
+  #layer-page .screen-title {
+    font-size: 26px;
+    letter-spacing: -0.3px;
+  }
+  #layer-page .screen-body {
+    padding: 8px 32px calc(40px + env(safe-area-inset-bottom));
+  }
+}
+@media (min-width: 1200px) {
+  #layer-page.screen {
+    left: 264px;
+    width: auto;
+  }
+  #layer-page .screen-title {
+    font-size: 30px;
+  }
+}
+html.tv #layer-page.screen {
+  top: 36px;
+  bottom: 36px;
+  left: calc(64px + 104px + 16px);
+  right: 64px;
+  width: auto;
+  border-radius: 28px;
+  border: 1px solid var(--line);
+}
+@media (min-width: 600px) {
+  .tema-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 22px 16px;
+  }
+}
+@media (min-width: 600px) {
+  .tema-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 170px));
+    justify-content: start;
+  }
+}
+@media (min-width: 900px) {
+  #page-pengaturan .logout-group {
+    grid-column: 1 / -1;
+  }
+}
