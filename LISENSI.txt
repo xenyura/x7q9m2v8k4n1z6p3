@@ -1,0 +1,4 @@
+Huruf di folder ini (dipakai banner Galery, Stivora 5.41.0):
+- Archivo Black   — Omnibus-Type, SIL Open Font License 1.1 (fonts.google.com/specimen/Archivo+Black)
+- Comfortaa       — Johan Aakerlund, SIL Open Font License 1.1 (fonts.google.com/specimen/Comfortaa)
+Kedua file sudah diperkecil (hanya huruf Latin) dan diubah ke WOFF. Lisensi lengkap: https://openfontlicense.org
