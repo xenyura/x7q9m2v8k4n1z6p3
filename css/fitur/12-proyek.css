@@ -1,0 +1,477 @@
+/* ============================================================
+   Stivora — Impian · Progress · Proyek software (5.68.0)
+   ============================================================ */
+.pry-wadah,
+.rc-wadah {
+  margin-top: 14px;
+}
+.pry-judul svg,
+.rc-judul-kartu svg {
+  width: 19px;
+  height: 19px;
+  flex: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Kartu proyek (baca) */
+.pry-kartu {
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.pry-kartu + .pry-kartu {
+  margin-top: 10px;
+}
+.pry-kepala {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px 8px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pry-ikon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+}
+.pry-ikon svg {
+  width: 19px;
+  height: 19px;
+  stroke: var(--accent);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pry-teks {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+.pry-teks b {
+  font-size: 15px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+.pry-teks small {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.pry-persen {
+  flex: none;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.pry-bar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  padding: 0 12px 12px;
+}
+.pry-bar i {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--c) var(--w), color-mix(in srgb, var(--c) 18%, transparent) var(--w));
+}
+.pry-detail {
+  padding: 0 12px 12px;
+  border-top: 1px solid var(--line);
+}
+.pry-ket {
+  margin: 10px 2px 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.pry-tahap {
+  margin-top: 8px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--c) 6%, transparent);
+}
+.pry-tahap-kepala {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+.pry-tahap-kepala i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+  flex: none;
+}
+.pry-tahap-kepala b {
+  flex: 1;
+  font-size: 14px;
+}
+.pry-tahap-kepala em {
+  font-style: normal;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c);
+  margin-left: 4px;
+}
+.pry-tahap-kepala span {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.pry-tahap-kepala svg {
+  width: 15px;
+  height: 15px;
+  stroke: var(--text-2);
+  stroke-width: 2.2;
+  fill: none;
+  transition: transform 0.2s;
+}
+.pry-tahap-kepala[aria-expanded='true'] svg {
+  transform: rotate(90deg);
+}
+.pry-daftar {
+  list-style: none;
+  margin: 0;
+  padding: 0 12px 10px;
+}
+.pry-daftar li {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-top: 1px dashed color-mix(in srgb, var(--text) 12%, transparent);
+}
+.pry-cek {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid color-mix(in srgb, var(--c) 55%, transparent);
+  display: grid;
+  place-items: center;
+  margin-top: 1px;
+}
+.pry-daftar li.beres .pry-cek {
+  background: var(--c);
+  border-color: var(--c);
+}
+.pry-cek svg {
+  width: 13px;
+  height: 13px;
+  stroke: #fff;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pry-l {
+  flex: 1;
+  min-width: 0;
+}
+.pry-l p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.pry-daftar li.beres .pry-l p {
+  color: var(--text-2);
+}
+.pry-l small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+.pry-opsi {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+.pry-tanya {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin: -3px 0 -3px 2px;
+  vertical-align: middle;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+.pry-tanya svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--accent);
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+}
+.pry-kenapa,
+.prye-kenapa {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--accent-soft);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.pry-catatan {
+  margin-top: 6px;
+  padding-left: 8px;
+  border-left: 3px solid var(--c);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.pry-kosong {
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+/* Halaman edit */
+.prye-chip,
+.prye-tahap-tab {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.prye .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.prye .chip.aktif {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.prye .chip.tambah {
+  color: var(--accent);
+  border-style: dashed;
+}
+.prye .chip svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  fill: none;
+  stroke-linecap: round;
+}
+.prye-tahap-tab .chip i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+}
+.prye-tahap-tab .chip.aktif {
+  background: var(--c);
+  border-color: var(--c);
+}
+.prye-tahap-tab .chip.aktif i {
+  background: #fff;
+}
+.prye-tahap-tab .chip small {
+  font-size: 11px;
+  opacity: 0.8;
+}
+.prye-versi-baru {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.prye-versi-baru .input {
+  flex: 1;
+  min-width: 0;
+}
+.prye-versi-baru .ie-poin-tambah {
+  margin-top: 0;
+  flex: none;
+}
+.prye-tahap-ket {
+  margin: 0 0 6px;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+.prye-daftar {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.prye-daftar li {
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.prye-daftar li.sembunyi > :not(.prye-aksi) {
+  opacity: 0.45;
+}
+.prye-baris {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.prye-cek {
+  flex: none;
+  position: relative;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+.prye-cek input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  z-index: 1;
+  margin: 0;
+  cursor: pointer;
+}
+.prye-cek span {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 2px solid var(--line);
+  background: var(--surface);
+}
+.prye-cek input:checked + span {
+  background: var(--success);
+  border-color: var(--success);
+}
+.prye-cek input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.prye-cek svg {
+  width: 15px;
+  height: 15px;
+  stroke: #fff;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+.prye-cek input:checked + span svg {
+  opacity: 1;
+}
+.prye-teks {
+  flex: 1;
+  min-width: 0;
+  margin: 3px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+input.prye-teks {
+  margin: 0;
+}
+.prye-baris .pry-tanya {
+  flex: none;
+  margin: 1px 0 0;
+}
+.prye-kenapa {
+  margin-left: 36px;
+}
+.prye-kenapa textarea {
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+}
+.prye-catatan {
+  display: block;
+  width: calc(100% - 36px);
+  margin: 8px 0 0 36px;
+  min-height: 38px;
+  font-size: 13px;
+  resize: none;
+  overflow: hidden;
+}
+.prye-aksi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0 36px;
+}
+.prye-aksi small {
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+.prye-pil {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-2);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.prye-pil.wajib {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  background: var(--accent-soft);
+}
+.prye-pil.hapus {
+  color: var(--danger);
+}
+.prye-pil svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+}
+
