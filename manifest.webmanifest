@@ -1,0 +1,22 @@
+{
+  "name": "Stivora — Wujudkan Impianmu",
+  "short_name": "Stivora",
+  "description": "Membantu mencapai impianku, selangkah demi selangkah.",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0e0c17",
+  "theme_color": "#6a4cf5",
+  "share_target": {
+    "action": "./?bagikan=1",
+    "method": "GET",
+    "params": { "title": "title", "text": "text", "url": "url" }
+  },
+  "icons": [
+    { "src": "assets/ikon/ikon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/ikon/ikon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/ikon/ikon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Keamanan: Content Security Policy (lapisan tambahan anti-XSS).
+       Jika Worker media memakai domain sendiri (bukan *.workers.dev), tambahkan domainnya di connect-src.
+       Peta (CesiumJS): cdn.jsdelivr.net, tiles.maps.eox.at (satelit gratis), *.cesium.com & *.virtualearth.net (Cesium ion), nominatim.openstreetmap.org (pencarian).
+       Jika skrip di <head> di bawah diubah, hash sha256 di script-src harus dihitung ulang (lihat README). -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-3PEN7PIa+pud+ZmIk7xmOLDn1HQzLi8uf+DOd9INxmQ=' https://www.youtube.com https://s.ytimg.com https://www.gstatic.com https://apis.google.com https://cdn.jsdelivr.net https://cesium.com https://unpkg.com 'unsafe-eval' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cesium.com https://unpkg.com; img-src 'self' data: blob: https: https://*.googleusercontent.com https://cdn.jsdelivr.net https://cesium.com https://unpkg.com https://tiles.maps.eox.at https://tile.openstreetmap.org https://*.tile.opentopomap.org https://*.cesium.com https://*.virtualearth.net http://*.virtualearth.net; media-src 'self' blob:; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://www.gstatic.com https://*.workers.dev https://cdn.jsdelivr.net https://cesium.com https://unpkg.com https://tiles.maps.eox.at https://tile.openstreetmap.org https://*.tile.opentopomap.org https://*.cesium.com https://*.virtualearth.net http://*.virtualearth.net https://nominatim.openstreetmap.org https://id.wikipedia.org https://en.wikipedia.org https://www.wikidata.org; frame-src https://www.youtube.com https://www.youtube-nocookie.com https://*.firebaseapp.com https://*.web.app https://accounts.google.com https://apis.google.com; worker-src 'self' blob: https://cdn.jsdelivr.net https://cesium.com https://unpkg.com; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="theme-color" content="#f6f5fb">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="description" content="Stivora — membantu mencapai impianku">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/ikon/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Stivora</title>
+  <link rel="icon" type="image/png" href="assets/ikon/ikon-192.png">
+  <script>
+    /* Terapkan tema sebelum halaman tampil agar tidak berkedip */
+    (function () {
+      var m = 'system';
+      try { m = localStorage.getItem('stivora.theme') || 'system'; } catch (e) {}
+      var dark = m === 'dark' || (m === 'system' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+      /* Kunci sidik jari: sembunyikan isi sebelum terverifikasi */
+      try { var k = JSON.parse(localStorage.getItem('stivora.kunci') || 'null'); if (k && k.on && k.id) document.documentElement.classList.add('kunci-aktif'); } catch (e) {}
+      /* Bahasa Aceh: sembunyikan sebentar sampai teks selesai diterjemahkan */
+      try { if (localStorage.getItem('stivora.lang') === 'ace') document.documentElement.classList.add('i18n-tunggu'); } catch (e) {}
+    })();
+  </script>
+  <!-- Gaya: urutan penting (dasar → kerangka → komponen → fitur → responsif) -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/fitur/01-umum.css">
+  <link rel="stylesheet" href="css/fitur/02-peta.css">
+  <link rel="stylesheet" href="css/fitur/03-impian.css">
+  <link rel="stylesheet" href="css/fitur/04-galery.css">
+  <link rel="stylesheet" href="css/fitur/05-lagu.css">
+  <link rel="stylesheet" href="css/fitur/06-film.css">
+  <link rel="stylesheet" href="css/fitur/07-buku.css">
+  <link rel="stylesheet" href="css/fitur/08-tempat.css">
+  <link rel="stylesheet" href="css/fitur/09-channel.css">
+  <link rel="stylesheet" href="css/fitur/10-tokoh.css">
+  <link rel="stylesheet" href="css/fitur/11-link.css">
+  <link rel="stylesheet" href="css/fitur/12-proyek.css">
+  <link rel="stylesheet" href="css/fitur/13-rencana.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Layar kunci sidik jari (tampil hanya jika kunci aktif) -->
+  <div class="lock-screen" id="lockScreen" role="dialog" aria-modal="true" aria-label="Stivora terkunci">
+    <div class="lock-box" id="lockMain">
+      <span class="brand-mark lock-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 2.5l2.6 6.2 6.7.6-5.1 4.4 1.5 6.6L12 16.8 6.3 20.3l1.5-6.6L2.7 9.3l6.7-.6z"/></svg>
+      </span>
+      <h2>Stivora terkunci</h2>
+      <p id="lockMsg">Gunakan sidik jari untuk membuka</p>
+      <button type="button" class="lock-btn" id="lockBtn" aria-label="Buka dengan sidik jari">
+        <svg viewBox="0 0 24 24"><path d="M5.6 7.2A8 8 0 0 1 20 12v.5"/><path d="M3.8 10.6A8 8 0 0 1 4.6 8.7"/><path d="M4 15.6a13 13 0 0 1-.3-2.1"/><path d="M7.4 20a12 12 0 0 1-1.4-6 6 6 0 0 1 12 0v1.3"/><path d="M17.7 18.6c.2-.8.3-1.6.3-2.4"/><path d="M9.6 21a10 10 0 0 1-.7-6.9 3.1 3.1 0 0 1 6.1.4c0 2 .4 3.9 1.1 5.6"/><path d="M12 14c0 2.6.6 5 1.6 7"/></svg>
+      </button>
+      <small class="lock-tap">Ketuk untuk membuka</small>
+      <button type="button" class="lock-link" id="lockForgot">Sidik jari tidak bisa dipakai?</button>
+    </div>
+    <div class="lock-box" id="lockReset" hidden>
+      <h2>Buka tanpa sidik jari?</h2>
+      <p>Kunci akan dimatikan dengan menghapus impian, foto, dan video di perangkat ini. Jika kamu pernah masuk dengan Google, datamu di cloud tetap aman dan kembali setelah sinkron.</p>
+      <div class="lock-actions">
+        <button type="button" class="btn ghost" id="lockResetNo">Batal</button>
+        <button type="button" class="btn danger" id="lockResetYes">Hapus &amp; buka</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="app">
+
+    <!-- Header -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark brand-logo" aria-hidden="true">
+          <img src="assets/ikon/ikon-192.png" alt="" width="42" height="42" decoding="async">
+        </span>
+        <div>
+          <h1 class="brand-name">Stivora</h1>
+          <p class="page-title" id="pageTitle">Impian</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="pages">
+
+      <!-- ============ GALERY ============ -->
+      <!-- Tampilan baru (5.38.0): banner 3:1 + foto profil di tepi bawah banner (5.39.0); diganti lewat ikon pensil — js/features/galery.js -->
+      <section class="page" id="page-galery" data-title="Galery">
+        <div class="gb-bingkai">
+          <div class="gb-banner" id="gbBanner"></div>
+          <span class="gb-sapa" id="gbSapa"></span>
+          <div class="gb-teks" id="gbTeks" aria-live="off"></div>
+          <div class="gb-statistik" id="gbStatistik"></div>
+          <button type="button" class="gb-profil" id="gbProfil" aria-label="Foto profil Galery"></button>
+          <button type="button" class="gb-edit" id="gbEdit" aria-label="Ubah banner dan foto profil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button>
+        </div>
+        <!-- Badge & bio (5.43.0) -->
+        <div class="gb-info" id="gbInfo"></div>
+        <!-- Tab Galery (5.45.0) — js/features/galery-tab.js -->
+        <div class="gt-tab" id="gtTab" role="tablist" aria-label="Isi Galery"></div>
+        <div class="gt-isi" id="gtIsi"></div>
+      </section>
+
+      <!-- ============ IMPIAN ============ -->
+      <section class="page" id="page-impian" data-title="Impian">
+        <!-- Peta 3D (16:9) — CesiumJS dimuat saat halaman ini dibuka: js/features/peta.js -->
+        <div class="peta-bingkai" id="petaBingkai">
+          <div class="peta" id="peta" role="application" aria-label="Peta"></div>
+          <div class="peta-ui kanan-atas">
+            <button type="button" class="peta-btn bulat" id="petaCariBtn" aria-label="Cari lokasi"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>
+            <button type="button" class="peta-btn bulat" id="petaEdit" aria-label="Kelola peta"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button>
+          </div>
+          <div class="peta-layer-menu" id="petaLayerMenu" role="menu" hidden></div>
+          <div class="peta-mode-menu" id="petaModeMenu" role="menu" hidden></div>
+          <div class="peta-ui kanan-bawah" id="petaAlatWadah">
+            <div class="peta-alat" id="petaAlat">
+            <button type="button" class="peta-btn bulat" id="petaModeBtn" aria-haspopup="menu" aria-label="Mode peta" title="Mode peta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg><span class="peta-sr" id="petaModeNama">Eksplore</span></button>
+            <button type="button" class="peta-btn bulat" id="petaLokasi" aria-label="Lokasi saya" title="Lokasi saya"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.6"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></button>
+            <button type="button" class="peta-btn bulat" id="petaLayerBtn" aria-label="Jenis peta & layer" aria-haspopup="menu"><svg viewBox="0 0 24 24"><path d="M12 3.5l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16l9 4.5 9-4.5"/></svg></button>
+            <button type="button" class="peta-btn bulat" id="petaRumah" aria-label="Lihat seluruh Indonesia"><svg viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5"/><path d="M6.5 9.5V20h11V9.5"/></svg></button>
+            <button type="button" class="peta-btn bulat teks" id="petaDimensi" aria-label="Tampilan 2D">2D</button>
+            </div>
+            <button type="button" class="peta-btn bulat peta-alat-panah" id="petaAlatPanah" aria-label="Tampilkan alat peta" aria-expanded="false" aria-controls="petaAlat"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+          </div>
+          <div class="peta-cari-bar" id="petaCariBar" hidden>
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+            <input type="text" inputmode="search" id="petaCariInput" placeholder="Cari kota atau tempat…" autocomplete="off" enterkeyhint="search">
+            <button type="button" class="peta-btn bulat kecil" id="petaCariTutup" aria-label="Tutup pencarian"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          </div>
+          <div class="peta-pilih" id="petaPilih" hidden>
+            <span class="peta-sr" id="petaPilihTeks">Tekan lama di lokasi yang diinginkan</span>
+            <button type="button" class="peta-btn bulat kecil pb-tanya" id="petaPilihTanya" aria-label="Bantuan" title="Bantuan">?</button>
+            <button type="button" class="peta-btn bulat kecil" id="petaPilihBatal" aria-label="Batal" title="Batal"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          </div>
+          <div class="peta-tekan" id="petaTekan" hidden aria-hidden="true"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26"/></svg></div>
+          <button type="button" class="peta-pin-baru" id="petaPinBaru" hidden aria-label="Tambah marker di sini"><span class="ppb-label">Tambah di sini</span><svg viewBox="0 0 48 58"><path d="M24 55.5S4.5 36.5 4.5 22a19.5 19.5 0 0 1 39 0c0 14.5-19.5 33.5-19.5 33.5z"/><path class="ppb-plus" d="M24 14v16M16 22h16"/></svg></button>
+          <div class="peta-putar-info" id="petaPutarInfo" hidden aria-live="polite"></div>
+          <div class="peta-bantuan" id="petaBantuan" hidden role="status"></div>
+          <div class="peta-info" id="petaInfo" hidden></div>
+          <div class="peta-tahun-menu" id="petaTahunMenu" role="menu" hidden></div>
+          <div class="peta-waktu" id="petaWaktu" hidden></div>
+          <div class="peta-tahun-menu" id="petaJalurMenu" role="menu" hidden></div>
+          <div class="peta-waktu" id="petaJalan" hidden></div>
+          <div class="peta-area-bar" id="petaArea" hidden></div>
+          <div class="peta-hasil" id="petaHasil" hidden></div>
+          <div class="peta-status" id="petaStatus" hidden></div>
+        </div>
+        <!-- 5 tab di bawah peta: hanya ikon; isi tab tampil di bawahnya (satu halaman, ikut tergulir). js/features/impian-tab.js -->
+        <nav class="it-tab" id="impianTab" role="tablist" aria-label="Bagian halaman Impian">
+          <button type="button" class="it-btn aktif" role="tab" id="itTab-peristiwa" data-it="peristiwa" aria-controls="itIsi-peristiwa" aria-selected="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 12.6l1.1 2.2 2.4.3-1.8 1.6.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.6 2.4-.3z"/></svg><span>Peristiwa</span></button>
+          <button type="button" class="it-btn" role="tab" id="itTab-impian" data-it="impian" aria-controls="itIsi-impian" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M2.5 20.5L9 9.5l3.2 5 2.3-3.2 7 9.2z"/><path d="M14.5 11.3V3.5"/><path d="M14.5 3.8h5l-1.4 2 1.4 2h-5"/></svg><span>Impian</span></button>
+          <button type="button" class="it-btn" role="tab" id="itTab-sumberdaya" data-it="sumberdaya" aria-controls="itIsi-sumberdaya" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 3l8.5 4.5v9L12 21l-8.5-4.5v-9z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/></svg><span>Sumberdaya</span></button>
+          <button type="button" class="it-btn" role="tab" id="itTab-progress" data-it="progress" aria-controls="itIsi-progress" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" opacity=".3"/><path d="M12 3.5a8.5 8.5 0 0 1 8.2 10.7"/><path d="M8.2 12.3l2.6 2.6 5-5.2"/></svg><span>Progress</span></button>
+          <button type="button" class="it-btn" role="tab" id="itTab-keuangan" data-it="keuangan" aria-controls="itIsi-keuangan" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18v3"/><path d="M4 7.5v10A2.5 2.5 0 0 0 6.5 20H20v-12H6.5A2.5 2.5 0 0 1 4 7.5z"/><circle cx="16" cy="14" r="1.3"/></svg><span>Keuangan</span></button>
+        </nav>
+        <div class="it-isi" id="impianIsi">
+          <section class="it-panel" role="tabpanel" id="itIsi-peristiwa" aria-labelledby="itTab-peristiwa"><div class="thn" id="kalTahunan"></div>
+            <div class="pe-indeks" id="peIndeks">
+              <div class="pe-indeks-atas"><span class="pe-legenda" aria-live="polite"></span>
+                <input class="pe-cari" id="peCari" type="search" maxlength="60" autocomplete="off" placeholder="Cari tahun / isi catatan" aria-label="Cari tahun atau isi catatan"></div>
+              <div class="pe-baris" id="peBaris"></div>
+            </div>
+            <div class="pe-catatan" id="peCatatan"></div></section>
+          <section class="it-panel" role="tabpanel" id="itIsi-impian" aria-labelledby="itTab-impian" hidden>
+            <div class="im-kepala">
+              <div class="im-atas">
+                <div class="im-foto" id="imFoto"></div>
+                <button type="button" class="im-edit" id="imEdit" aria-label="Edit"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button>
+              </div>
+              <div class="im-pita"><span class="im-pita-isi" id="imJudul" translate="no"></span></div>
+            </div>
+            <div id="imUtama"></div>
+            <p class="iu-bagian-label" id="imBagianLabel" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>Bagian dari impian utama</p>
+            <div class="im-grid" id="imGrid" hidden></div>
+          </section>
+          <section class="it-panel" role="tabpanel" id="itIsi-sumberdaya" aria-labelledby="itTab-sumberdaya" hidden>
+            <div class="sd-analog-kartu">
+              <div class="sd-judul-baris"><h3 class="sd-judul">1. Sumberdaya waktu<button type="button" class="sd-tanya" id="sdTanya" aria-label="Keterangan sumberdaya waktu">?</button></h3>
+                <button type="button" class="sd-edit" id="sdEdit" aria-label="Pengaturan sumberdaya waktu"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button></div>
+              <div class="sd-analog" id="sdAnalog" role="img" aria-label="Jam analog"></div>
+            </div>
+            <div class="sd-buku-daftar" id="sdBuku"></div>
+          </section>
+          <section class="it-panel" role="tabpanel" id="itIsi-progress" aria-labelledby="itTab-progress" hidden>
+            <div class="pg-wadah ky-wadah">
+              <div class="sd-judul-baris"><h3 class="sd-judul ky-judul"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 4.6-3 8.4-7 10-4-1.6-7-5.4-7-10V6z"/><path d="M8.8 12l2.2 2.2 4.3-4.4"/></svg><span>Kenapa aku yakin mampu</span></h3>
+                <button type="button" class="sd-edit" id="pgEdit" aria-label="Edit keyakinan dan peta jalan"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button></div>
+              <div id="kyIsi"></div>
+            </div>
+            <div class="pg-wadah">
+              <div class="sd-judul-baris"><h3 class="sd-judul pg-judul"><span>Peta jalan</span><small>tahun saran per fase</small></h3></div>
+              <div id="pgIsi"></div>
+            </div>
+            <!-- 5.68.0: Proyek software (js/features/impian-proyek.js) & Rencana cadangan (js/features/impian-rencana.js) — baca saja, edit lewat pensil -->
+            <div class="pg-wadah pry-wadah">
+              <div class="sd-judul-baris"><h3 class="sd-judul pry-judul"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M13.5 4.5l-3 15"/></svg><span>Proyek software</span></h3>
+                <button type="button" class="sd-edit" id="pryEdit" aria-label="Edit proyek software"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button></div>
+              <div id="pryIsi"></div>
+            </div>
+            <div class="pg-wadah rc-wadah">
+              <div class="sd-judul-baris"><h3 class="sd-judul rc-judul-kartu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h11a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M9 8.5h6"/></svg><span>Rencana cadangan</span></h3>
+                <button type="button" class="sd-edit" id="rcEdit" aria-label="Edit rencana cadangan"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg></button></div>
+              <div id="rcIsi"></div>
+            </div>
+          </section>
+          <section class="it-panel" role="tabpanel" id="itIsi-keuangan" aria-labelledby="itTab-keuangan" hidden><div id="kuIsi"></div></section>
+        </div>
+      </section>
+
+      <!-- ============ PENGATURAN ============ -->
+      <section class="page" id="page-pengaturan" data-title="Pengaturan">
+        <div class="group">
+          <!-- Sesudah login: profil -->
+          <div class="profile-row" id="profileRow" hidden>
+            <span class="avatar" id="profileAvatar"></span>
+            <span class="profile-text">
+              <b id="profileName"></b>
+              <small id="profileEmail"></small>
+            </span>
+          </div>
+
+          <!-- Sebelum login -->
+          <h3 class="group-title" id="loginTitle">Akun</h3>
+          <div class="card list-card" id="loginGrid">
+            <button class="row" id="btnLoginGoogle">
+              <span class="row-ic g-row-ic" aria-hidden="true">G</span>
+              <span class="row-text"><b>Masuk dengan Google</b><small>Sinkronkan impianmu ke cloud</small></span>
+              <span class="row-end"><svg class="chev-sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3 class="group-title">Tampilan</h3>
+          <div class="pref-grid">
+            <button class="pref-box" id="btnMode">
+              <span class="pref-ic" id="modeIcon" aria-hidden="true"></span>
+              <span class="pref-text"><small>Mode</small><b id="modeValue">Sistem</b></span>
+            </button>
+            <button class="pref-box" id="btnTema">
+              <span class="pref-ic tema" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c.9 0 1.6-.7 1.6-1.6 0-.4-.2-.8-.4-1.1-.3-.3-.5-.7-.5-1.1 0-.9.7-1.6 1.6-1.6H16a5 5 0 0 0 5-5C21 6.6 17 3 12 3z"/><circle cx="7.5" cy="11.5" r="1.2"/><circle cx="9.8" cy="7.4" r="1.2"/><circle cx="14.4" cy="7.4" r="1.2"/></svg>
+              </span>
+              <span class="pref-text"><small>Tema</small><b id="temaValue">Ungu</b></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3 class="group-title">Umum</h3>
+          <div class="card list-card">
+            <button class="row" id="btnBahasa">
+              <span class="row-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+              <span class="row-text"><b>Bahasa</b><small>Bahasa aplikasi</small></span>
+              <span class="row-end"><span class="lang-val" id="bahasaValue">Indonesia</span><svg class="chev-sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3 class="group-title">Keamanan</h3>
+          <div class="card list-card">
+            <button class="row" id="btnKunci">
+              <span class="row-ic"><svg viewBox="0 0 24 24"><path d="M5.6 7.2A8 8 0 0 1 20 12v.5"/><path d="M3.8 10.6A8 8 0 0 1 4.6 8.7"/><path d="M4 15.6a13 13 0 0 1-.3-2.1"/><path d="M7.4 20a12 12 0 0 1-1.4-6 6 6 0 0 1 12 0v1.3"/><path d="M17.7 18.6c.2-.8.3-1.6.3-2.4"/><path d="M9.6 21a10 10 0 0 1-.7-6.9 3.1 3.1 0 0 1 6.1.4c0 2 .4 3.9 1.1 5.6"/><path d="M12 14c0 2.6.6 5 1.6 7"/></svg></span>
+              <span class="row-text"><b>Kunci aplikasi</b><small>Buka dengan sidik jari</small></span>
+              <span class="row-end"><span class="lang-val" id="kunciValue">Mati</span><svg class="chev-sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3 class="group-title">Cadangan</h3>
+          <div class="card list-card">
+            <button class="row" id="btnBackup">
+              <span class="row-ic"><svg viewBox="0 0 24 24"><path d="M7 18.5a4.5 4.5 0 0 1-.9-8.9A6 6 0 0 1 17.7 8.4 4.1 4.1 0 0 1 17 18.5"/><path d="M12 12.5v8M9 15.5l3-3 3 3"/></svg></span>
+              <span class="row-text"><b>Cadangkan &amp; pulihkan</b><small id="backupSub">Cadangan otomatis ke cloud</small></span>
+              <span class="row-end"><svg class="chev-sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button class="row" id="btnTransfer">
+              <span class="row-ic"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9.5 11v6M7.5 15l2 2 2-2M14.5 17v-6M12.5 13l2-2 2 2"/></svg></span>
+              <span class="row-text"><b>Ekspor &amp; impor</b><small>File cadangan .json</small></span>
+              <span class="row-end"><svg class="chev-sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+          <input type="file" id="importInput" accept="application/json,.json" hidden>
+        </div>
+
+
+        <div class="group">
+          <h3 class="group-title">Sistem</h3>
+          <div class="card list-card">
+            <button class="row" id="btnVersi">
+              <span class="row-ic"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4.5h-4.5"/><path d="M12 8v4l2.5 2"/></svg></span>
+              <span class="row-text"><b>Versi &amp; pembaruan</b><small id="versiSub">Versi</small></span>
+              <span class="row-end"><span class="count-badge" id="updateBadge" hidden>Baru</span><svg class="chev-sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+            <button class="row" id="btnGalat">
+              <span class="row-ic"><svg viewBox="0 0 24 24"><path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.5h.01"/></svg></span>
+              <span class="row-text"><b>Log error</b><small id="galatSub">Tidak ada error</small></span>
+              <span class="row-end"><span class="count-badge" id="galatCount" hidden>0</span><svg class="chev-sm" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="group">
+          <h3 class="group-title">Tentang</h3>
+          <div class="card about">
+            <p><b>Stivora</b> · versi <span id="versiTentang">4.5.0</span></p>
+            <p>Membantu mencapai impianku, selangkah demi selangkah. Data tersimpan di perangkat ini, dan tersinkron ke cloud saat kamu masuk dengan Google.</p>
+          </div>
+        </div>
+
+        <!-- Keluar akun: hanya tampil saat sudah masuk -->
+        <div class="group logout-group" id="logoutGroup" hidden>
+          <div class="card list-card">
+            <button class="row danger" id="btnLogoutMain">
+              <span class="row-ic"><svg viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10"/></svg></span>
+              <span class="row-text"><b>Keluar akun</b><small id="logoutSub">Keluar dari akun Google</small></span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Navigasi bawah -->
+    <nav class="bottom-nav" id="bottomNav">
+      <!-- Merek: hanya tampil di tablet, laptop, PC, TV -->
+      <div class="nav-brand" aria-hidden="true">
+        <span class="brand-mark"><svg viewBox="0 0 24 24"><path d="M12 2.5l2.6 6.2 6.7.6-5.1 4.4 1.5 6.6L12 16.8 6.3 20.3l1.5-6.6L2.7 9.3l6.7-.6z"/></svg></span>
+        <span class="nav-brand-name">Stivora</span>
+      </div>
+
+      <!-- Galery: bingkai foto -->
+      <button class="nav-item" data-tab="galery" aria-label="Galery">
+        <svg class="nav-ic" viewBox="0 0 24 24"><rect class="f" x="3" y="4" width="18" height="16" rx="3.5"/><circle class="d dot" cx="8.5" cy="9.5" r="1.7"/><path class="d" d="M3.4 17.2l4.8-4.7 3.2 3.1 3.9-3.9 5.6 5.6"/></svg>
+        <span class="nav-label">Galery</span>
+      </button>
+
+      <!-- Impian: jalur perjalanan menuju bendera -->
+      <button class="nav-item" data-tab="impian" aria-label="Impian">
+        <svg class="nav-ic" viewBox="0 0 24 24"><path class="o" d="M7.4 19H16a2.4 2.4 0 0 0 0-4.75H8a2.4 2.4 0 0 1 0-4.75h9.5"/><path class="o" d="M17.5 9.5V2.6"/><path class="f" d="M17.5 2.6l4.3 2.2-4.3 2.2z"/><circle class="f" cx="5.2" cy="19" r="2"/></svg>
+        <span class="nav-label">Impian</span>
+      </button>
+
+      <!-- Pengaturan: roda gigi -->
+      <button class="nav-item" data-tab="pengaturan" aria-label="Pengaturan">
+        <svg class="nav-ic" viewBox="0 0 24 24"><path class="f" d="M9.78 4.73L10.14 1.97A10.2 10.2 0 0 1 13.86 1.97L14.22 4.73A7.6 7.6 0 0 1 15.57 5.29L15.57 5.29L17.78 3.59A10.2 10.2 0 0 1 20.41 6.22L18.71 8.43A7.6 7.6 0 0 1 19.27 9.78L19.27 9.78L22.03 10.14A10.2 10.2 0 0 1 22.03 13.86L19.27 14.22A7.6 7.6 0 0 1 18.71 15.57L18.71 15.57L20.41 17.78A10.2 10.2 0 0 1 17.78 20.41L15.57 18.71A7.6 7.6 0 0 1 14.22 19.27L14.22 19.27L13.86 22.03A10.2 10.2 0 0 1 10.14 22.03L9.78 19.27A7.6 7.6 0 0 1 8.43 18.71L8.43 18.71L6.22 20.41A10.2 10.2 0 0 1 3.59 17.78L5.29 15.57A7.6 7.6 0 0 1 4.73 14.22L4.73 14.22L1.97 13.86A10.2 10.2 0 0 1 1.97 10.14L4.73 9.78A7.6 7.6 0 0 1 5.29 8.43L5.29 8.43L3.59 6.22A10.2 10.2 0 0 1 6.22 3.59L8.43 5.29A7.6 7.6 0 0 1 9.78 4.73Z"/><circle class="d dot" cx="12" cy="12" r="3"/></svg>
+        <span class="nav-label">Pengaturan</span>
+      </button>
+    </nav>
+
+    <!-- ============ LAPISAN (halaman fitur, penampil media, konfirmasi) ============ -->
+
+    <!-- Halaman fitur pengaturan (Akun, Mode, Bahasa, Cadangan, Ekspor & impor, Sampah) -->
+    <section class="layer screen subpage" id="layer-page" aria-hidden="true">
+      <header class="screen-bar">
+        <button class="icon-btn" data-back aria-label="Kembali">
+          <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h2 class="screen-title" id="subTitle">Pengaturan</h2>
+      </header>
+      <div class="screen-body" id="subBody"></div>
+    </section>
+
+    <!-- Penampil media (dipakai marker & tempat di peta) -->
+    <section class="layer viewer pn" id="layer-img" aria-hidden="true">
+      <div class="pn-trak" id="pnTrak"></div>
+      <header class="pn-atas">
+        <button class="pn-ib" data-back aria-label="Tutup">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+        <span class="pn-pos" id="pnPos">1 / 1</span>
+        <span class="viewer-aksi">
+        <button class="pn-ib" id="btnPinImg" aria-label="Sematkan" hidden>
+          <svg viewBox="0 0 24 24"><path d="M15 3.5l5.5 5.5-3 1-3.5 3.5.5 4-2 2-4-4-4.5 4.5M9.5 11.5l-4-4 2-2 4 .5L15 2.5"/></svg>
+        </button>
+        <button class="pn-ib" id="pnInfoBtn" aria-label="Info lengkap">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+        </button>
+        <button class="pn-ib" id="btnDeleteImg" aria-label="Hapus">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
+        </button>
+        </span>
+      </header>
+      <div class="pn-zoom" id="pnZoom">1×</div>
+      <div class="pn-lencana" id="pnLencana"></div>
+      <div class="pn-bawah" id="pnBawah"></div>
+      <div class="pn-lembar" id="pnLembar"></div>
+    </section>
+
+    <!-- Konfirmasi -->
+    <section class="layer dialog-wrap" id="layer-confirm" aria-hidden="true">
+      <div class="scrim" data-back></div>
+      <div class="dialog" role="alertdialog">
+        <h3 id="confirmTitle">Yakin?</h3>
+        <p id="confirmText"></p>
+        <div class="dialog-actions">
+          <button class="btn ghost" data-back>Batal</button>
+          <button class="btn danger" id="confirmOk">Hapus</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- Pemberitahuan versi baru (PWA) -->
+    <div class="update-bar" id="updateBar" role="status" hidden>
+      <span>Versi baru Stivora tersedia</span>
+      <button type="button" class="update-btn" id="btnUpdateBar">Perbarui</button>
+      <button type="button" class="update-x" id="btnUpdateTutup" aria-label="Nanti saja"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  </div>
+
+  <!-- Skrip: dimuat berurutan (inti → fitur → layanan → main.js paling akhir).
+       Sengaja tanpa ES modules agar jalan juga di pratinjau SPCK / dibuka langsung. -->
+  <script src="js/config.js"></script>
+  <script src="js/core/versi.js"></script>
+  <script src="js/core/galat.js"></script>
+  <script src="js/i18n/ace.js"></script>
+  <script src="js/core/i18n.js"></script>
+  <script src="js/core/dom.js"></script>
+  <script src="js/core/storage.js"></script>
+  <!-- Sisa skrip dimuat oleh muat.js setelah data siap dari IndexedDB (urutan sama) -->
+  <script src="js/core/muat.js"></script>
+</body>
+</html>
